@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Chauffeurs de Taxi - Jacmel</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Inscription des Chauffeurs de Taxi - Jacmel</h1>
+        <p>Ajoutez vos informations pour faciliter la réservation.</p>
+    </header>
+
+    <section id="userList">
+        <h2>Liste des Chauffeurs</h2>
+        <ul id="users">
+          <!-- Users will be dynamically added here -->
+        </ul>
+    </section>
+
+    <section id="formulaire" style="display: block;">
+        <h2>Formulaire d'Inscription</h2>
+        <form id="taxiForm">
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" required>
+
+            <label for="numero">Numéro de téléphone:</label>
+            <input type="text" id="numero" required>
+
+            <label for="adresse">Adresse:</label>
+            <input type="text" id="adresse" required>
+
+            <label for="localisation">Localisation actuelle:</label>
+            <input type="text" id="localisation" required>
+
+            <label for="motoCouleur">Couleur de la moto:</label>
+            <input type="text" id="motoCouleur" required>
+
+            <label for="plaque">Numéro de plaque de la moto:</label>
+            <input type="text" id="plaque" required>
+
+           <div class="btn">
+            <button type="submit" id="addChauffeurBtn">Ajouter Chauffeur</button>
+            <button type="button" id="searchChauffeurBtn">Rechercher Chauffeur</button>
+            <button type="button" id="updateChauffeurBtn">Mettre à jour Chauffeur</button>
+           </div>
+        </form>
+    </section>
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+     <script src="js/asset.js" defer></script>
+    <script src="js/script.js" defer></script>
+        <script src="js/displayData.js" defer></script>
+
+    <script>
+       
+        // Handle form submission
+
+       // Ajout du chauffeur
+document.getElementById('addChauffeurBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Empêcher la soumission du formulaire
+
+    const nom = document.getElementById('nom').value;
+    const numero = document.getElementById('numero').value;
+    const adresse = document.getElementById('adresse').value;
+    const localisation = document.getElementById('localisation').value;
+    const motoCouleur = document.getElementById('motoCouleur').value;
+    const plaque = document.getElementById('plaque').value;
+
+    const chauffeurData = {
+        Nom: nom,
+        Numero: numero,
+        Adresse: adresse,
+        Localisation: localisation,
+        MotoCouleur: motoCouleur,
+        Plaque: plaque
+    };
+
+    const chauffeursRef = database.ref('chauffeurs/' + nom);
+    chauffeursRef.set(chauffeurData, function(error) {
+        if (error) {
+            alert('Erreur: ' + error.message);
+        } else {
+            alert('Chauffeur ajouté avec succès!');
+            document.getElementById('taxiForm').reset();
+        }
+    });
+});
+
+// Recherche du chauffeur
+document.getElementById('searchChauffeurBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Empêcher la soumission du formulaire
+    
+    const nom = document.getElementById('nom').value; // Utiliser le nom pour identifier
+
+    if (nom === "") {
+        alert("Veuillez entrer un nom pour rechercher.");
+        return;
+    }
+
+    const chauffeursRef = database.ref('chauffeurs/' + nom);
+    chauffeursRef.once('value', function(snapshot) {
+        if (snapshot.exists()) {
+            const chauffeur = snapshot.val();
+            
+            // Remplir les champs input avec les données récupérées
+            document.getElementById('numero').value = chauffeur.Numero || ''; // Si la donnée existe, l'afficher sinon laisser vide
+            document.getElementById('adresse').value = chauffeur.Adresse || '';
+            document.getElementById('localisation').value = chauffeur.Localisation || '';
+            document.getElementById('motoCouleur').value = chauffeur.MotoCouleur || '';
+            document.getElementById('plaque').value = chauffeur.Plaque || '';
+            
+            alert('Chauffeur trouvé !');
+        } else {
+            alert('Aucun chauffeur trouvé avec ce nom.');
+        }
+    });
+});
+
+// Mise à jour du chauffeur
+document.getElementById('updateChauffeurBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Empêcher la soumission du formulaire
+    
+    const nom = document.getElementById('nom').value; // Utiliser le nom pour identifier
+    const numero = document.getElementById('numero').value;
+    const adresse = document.getElementById('adresse').value;
+    const localisation = document.getElementById('localisation').value;
+    const motoCouleur = document.getElementById('motoCouleur').value;
+    const plaque = document.getElementById('plaque').value;
+
+    const chauffeurData = {
+        Nom: nom,
+        Numero: numero,
+        Adresse: adresse,
+        Localisation: localisation,
+        MotoCouleur: motoCouleur,
+        Plaque: plaque
+    };
+
+    const chauffeursRef = database.ref('chauffeurs/' + nom);
+    chauffeursRef.update(chauffeurData, function(error) {
+        if (error) {
+            alert('Erreur: ' + error.message);
+        } else {
+            alert('Chauffeur mis à jour avec succès!');
+            document.getElementById('taxiForm').reset();
+        }
+    });
+});
+    </script>
+
+
+</body>
+</html>

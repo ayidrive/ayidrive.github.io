@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <title>Inscription Chauffeurs de Taxi - Jacmel</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js"></script>
+</head>
+<body>
+    
+    <header>
+        <div class="image"><img src="" alt=""></div>
+        <h1>Jwenn yon chofè taksi - Jakmèl</h1>
+        <p>Kontakte yon chofè pou transpò oubyen livrezon lakay ou.</p>
+        <button >Rezève kounye</button>
+        <p><i>Minimòm pri kous yo se 75Gdes nan vil la.</i></p>
+    </header>
+
+    <div class="rezevasyon" style="display: none;">
+        <div class="input"><input type="text" placeholder="Koute ou ye a"></div>
+        <div class="input"><input type="text" placeholder="Koute ou prale a"></div>
+        <div class="input"><input type="number" placeholder="Pwopoze pri pa ou"></div>
+        <button>Jwenn yon chofè</button>
+    </div>
+
+  <!-- Formulaire pour envoyer les informations -->
+<div id="contactForm" style="display:none;">
+    <h3>Envoyer un message</h3>
+    <label for="clientAddress">Adresse du client :</label>
+    <input type="text" id="clientAddress" placeholder="Adresse du client" required><br>
+  
+    <label for="destinationAddress">Lieu de destination :</label>
+    <input type="text" id="destinationAddress" placeholder="Destination" required><br>
+  
+    <button id="sendWhatsapp" style="display:none;">
+        <i class="fab fa-whatsapp"></i> Envoyer sur WhatsApp
+    </button>
+    <button id="sendBip" style="display:none;">
+        <i class="fas fa-comment"></i> Envoyer via Bip
+    </button>
+    <button id="sendSms" style="display:none;">
+        <i class="fas fa-sms"></i> Envoyer par SMS
+    </button>
+</div>
+
+
+    <section id="userList">
+        <h2>Liste des Chauffeurs</h2>
+        <select id="addressSelect">
+            <option value="">Sélectionnez une adresse</option>
+          </select>
+        <div id="chauffeur">
+          <!-- Users will be dynamically added here -->
+         <div class="post">
+           <div>
+                <strong>Nom:</strong> Ruban Joseph <br>
+                <strong>Numéro:</strong> +50947112618<br>
+                <strong>Adresse:</strong> Route de la saline <br>
+                <strong>Localisation:</strong> Jacmel <br>
+                <strong>Couleur de la moto:</strong> Rouge <br>
+                <strong>Numéro de plaque:</strong> Pas de plaque <br>
+                <strong>Disponible:</strong> Wi <br>
+           </div>
+           <div class="image-chauffeur">
+            <img src="" alt="">
+           </div>
+            <hr>
+            <div>
+                <button>Whatsapp</button>
+                <button>Bip</button>
+                <button>Sms</button>
+            </div>
+         </div>
+        </div>
+    </section>
+
+    <section id="formulaire" class="formulaire">
+        <h2>Formulaire d'Inscription</h2>
+        <form id="taxiForm">
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" required>
+
+            <label for="numero">Numéro de téléphone:</label>
+            <input type="text" id="numero" required>
+
+            <label for="adresse">Adresse:</label>
+            <input type="text" id="adresse" required>
+
+            <label for="localisation">Localisation actuelle:</label>
+            <input type="text" id="localisation" required>
+
+            <label for="motoCouleur">Couleur de la moto:</label>
+            <input type="text" id="motoCouleur" required>
+
+            <label for="plaque">Numéro de plaque de la moto:</label>
+            <input type="text" id="plaque" required>
+
+           <div class="btn">
+            <button type="submit" id="addChauffeurBtn">Ajouter Chauffeur</button>
+            <button type="button" id="searchChauffeurBtn">Rechercher Chauffeur</button>
+            <button type="button" id="updateChauffeurBtn">Mettre à jour Chauffeur</button>
+           </div>
+        </form>
+    </section>
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+     <script src="js/asset.js" defer></script>
+    <script src="js/script.js" defer></script>
+        <script src="js/displayData.js" defer></script>
+
+    <script>
+       
+        // Handle form submission
+
+       // Ajout du chauffeur
+document.getElementById('addChauffeurBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Empêcher la soumission du formulaire
+
+    const nom = document.getElementById('nom').value;
+    const numero = document.getElementById('numero').value;
+    const adresse = document.getElementById('adresse').value;
+    const localisation = document.getElementById('localisation').value;
+    const motoCouleur = document.getElementById('motoCouleur').value;
+    const plaque = document.getElementById('plaque').value;
+
+    const chauffeurData = {
+        Nom: nom,
+        Numero: numero,
+        Adresse: adresse,
+        Localisation: localisation,
+        MotoCouleur: motoCouleur,
+        Plaque: plaque
+    };
+
+    const chauffeursRef = database.ref('chauffeurs/' + nom);
+    chauffeursRef.set(chauffeurData, function(error) {
+        if (error) {
+            alert('Erreur: ' + error.message);
+        } else {
+            alert('Chauffeur ajouté avec succès!');
+            document.getElementById('taxiForm').reset();
+        }
+    });
+});
+
+// Recherche du chauffeur
+document.getElementById('searchChauffeurBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Empêcher la soumission du formulaire
+    
+    const nom = document.getElementById('nom').value; // Utiliser le nom pour identifier
+
+    if (nom === "") {
+        alert("Veuillez entrer un nom pour rechercher.");
+        return;
+    }
+
+    const chauffeursRef = database.ref('chauffeurs/' + nom);
+    chauffeursRef.once('value', function(snapshot) {
+        if (snapshot.exists()) {
+            const chauffeur = snapshot.val();
+            
+            // Remplir les champs input avec les données récupérées
+            document.getElementById('numero').value = chauffeur.Numero || ''; // Si la donnée existe, l'afficher sinon laisser vide
+            document.getElementById('adresse').value = chauffeur.Adresse || '';
+            document.getElementById('localisation').value = chauffeur.Localisation || '';
+            document.getElementById('motoCouleur').value = chauffeur.MotoCouleur || '';
+            document.getElementById('plaque').value = chauffeur.Plaque || '';
+            
+            alert('Chauffeur trouvé !');
+        } else {
+            alert('Aucun chauffeur trouvé avec ce nom.');
+        }
+    });
+});
+
+// Mise à jour du chauffeur
+document.getElementById('updateChauffeurBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Empêcher la soumission du formulaire
+    
+    const nom = document.getElementById('nom').value; // Utiliser le nom pour identifier
+    const numero = document.getElementById('numero').value;
+    const adresse = document.getElementById('adresse').value;
+    const localisation = document.getElementById('localisation').value;
+    const motoCouleur = document.getElementById('motoCouleur').value;
+    const plaque = document.getElementById('plaque').value;
+
+    const chauffeurData = {
+        Nom: nom,
+        Numero: numero,
+        Adresse: adresse,
+        Localisation: localisation,
+        MotoCouleur: motoCouleur,
+        Plaque: plaque
+    };
+
+    const chauffeursRef = database.ref('chauffeurs/' + nom);
+    chauffeursRef.update(chauffeurData, function(error) {
+        if (error) {
+            alert('Erreur: ' + error.message);
+        } else {
+            alert('Chauffeur mis à jour avec succès!');
+            document.getElementById('taxiForm').reset();
+        }
+    });
+});
+    </script>
+
+
+</body>
+</html>
