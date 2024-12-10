@@ -1,60 +1,95 @@
+/* Global Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Body Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
     color: #333;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
+/* Header Styling */
 header {
     background-color: #4CAF50;
     color: white;
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem 10px;
 }
 
 h1 {
     margin-bottom: 10px;
+    font-size: 1.8rem;
 }
 
 h2 {
     margin-top: 20px;
     color: #4CAF50;
 }
-#chauffeur{
-    width: 100%;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    padding: 3px;
+
+header p {
+    font-size: 1rem;
+    margin-top: 10px;
 }
 
-#chauffeur > .post{
-    border: 1px solid black;
-    border-radius: 10px;
+/* Chauffeur Posts Styling */
+#chauffeur {
+    width: 100%;
+    padding: 3px;
     box-sizing: border-box;
-    width: 99%;
-    display: block;
-    margin: 10px auto;
-    padding: 5px;
-    box-shadow: 0px 0px 10px 0px rgb(106, 103, 103);
+    margin-top: 20px;
 }
-.image-chauffeur{
-    border: 2px solid blue;
+
+#chauffeur  .post {
+    border: 1px solid #ddd;
     border-radius: 10px;
-    height: 50px;
-    width: 50px;
-    
+    padding: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    justify-content: space-between;
+    position: relative;
+}
+.post .see-more-btn{
+    width: 100%;
+}
+
+
+/* Position the image at the top right */
+.image-chauffeur {
+    position: absolute;  /* Fixed position so it stays on the screen */
+    top: 1px;        /* Adjust this value to move the image up/down */
+    right: 10px;      /* Adjust this value to move the image left/right */
+    width: 60px;      /* Adjust the width of the image */
+    height: 60px;     /* Adjust the height of the image */
+    border-radius: 50%;  /* Make the image circular */
+    overflow: hidden;    /* Ensure the image is clipped if it overflows */
+    z-index: 1000;       /* Ensure the image is always on top of other content */
+    border: 3px solid blue;
+    margin-bottom: 10px;
+}
+
+.image-chauffeur img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* Ensure the image fits the container */
+}
+
+.listBtn{
+    display: flex;
+    gap: 5px;
+}
+.listBtn button{
+    padding: 2px;
 }
 
 button {
-    background-color: #25d366; /* WhatsApp green color */
+    background-color: #25d366; /* WhatsApp color */
     color: white;
     padding: 10px 20px;
     margin: 5px;
@@ -64,38 +99,36 @@ button {
     border-radius: 5px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
 }
 
 button i {
-    margin-right: 8px; /* Spacing between icon and text */
+    margin-right: 8px;
 }
 
-/* Styles for Bip and SMS buttons */
+button:hover {
+    background-color: #128c7e; /* Darker green for hover */
+}
+
+/* Bip and SMS Buttons Customization */
 #sendBip {
-    background-color: #0084cc; /* Blue color for Bip */
+    background-color: #0084cc; /* Blue for Bip */
 }
 
 #sendSms {
     background-color: #34b7f1; /* Light blue for SMS */
 }
 
-button:hover {
-    opacity: 0.8; /* Hover effect */
-}
-
-
-.formulaire{
-    position:fixed;
-    top: 0;
-    left: 0;
-    transform: translate(-50% -50%);
+/* Form Styling */
+.formulaire {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: none;
-
-}
-#formulaire {
-    padding: 20px;
     background-color: white;
-    margin: 20px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -115,10 +148,6 @@ input {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-form .btn{
-    display: flex;
-    gap: 5px;
-}
 
 button {
     background-color: #020202;
@@ -128,7 +157,7 @@ button {
     margin: 10px;
     cursor: pointer;
     border-radius: 4px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
@@ -160,8 +189,87 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.rezevasyon{
+.rezevasyon {
     display: block;
     margin: 10px auto;
-    width: max-content;
+    width: 100%;
 }
+
+/* Media Queries for Responsiveness */
+
+/* Mobile Styles */
+@media only screen and (max-width: 768px) {
+    header {
+        padding: 1rem 10px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .post {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .image-chauffeur {
+        margin-bottom: 10px;
+    }
+
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .formulaire {
+        padding: 15px;
+        width: 90%;
+    }
+
+    /* Adjust input field sizes for mobile */
+    input {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+/* Tablet Styles */
+@media only screen and (max-width: 1024px) {
+    .post {
+        flex-direction: row;
+    }
+
+    .formulaire {
+        padding: 20px;
+        width: 80%;
+    }
+
+    input {
+        font-size: 16px;
+    }
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 1025px) {
+    header {
+        padding: 2rem 10px;
+    }
+
+    .post {
+        flex-direction: row;
+    }
+}
+
+/* Other Adjustments */
+button i {
+    margin-right: 8px;
+}
+@media screen and (max-width:320px){
+    body{
+        display: block;
+    }
+    header button{
+        background: blue;
+    }
+}
+

@@ -39,15 +39,17 @@
     <label for="destinationAddress">Lieu de destination :</label>
     <input type="text" id="destinationAddress" placeholder="Destination" required><br>
   
-    <button id="sendWhatsapp" style="display:none;">
-        <i class="fab fa-whatsapp"></i> Envoyer sur WhatsApp
-    </button>
-    <button id="sendBip" style="display:none;">
-        <i class="fas fa-comment"></i> Envoyer via Bip
-    </button>
-    <button id="sendSms" style="display:none;">
-        <i class="fas fa-sms"></i> Envoyer par SMS
-    </button>
+    <div class="listBtn">
+        <button id="sendWhatsapp" style="display:none;">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+        <button id="sendBip" style="display:none;">
+            <i class="fas fa-comment"></i>Bip
+        </button>
+        <button id="sendSms" style="display:none;">
+            <i class="fas fa-sms"></i>SMS
+        </button>
+    </div>
 </div>
 
 
@@ -58,26 +60,34 @@
           </select>
         <div id="chauffeur">
           <!-- Users will be dynamically added here -->
-         <div class="post">
-           <div>
-                <strong>Nom:</strong> Ruban Joseph <br>
-                <strong>Numéro:</strong> +50947112618<br>
-                <strong>Adresse:</strong> Route de la saline <br>
-                <strong>Localisation:</strong> Jacmel <br>
-                <strong>Couleur de la moto:</strong> Rouge <br>
-                <strong>Numéro de plaque:</strong> Pas de plaque <br>
-                <strong>Disponible:</strong> Wi <br>
-           </div>
-           <div class="image-chauffeur">
-            <img src="" alt="">
-           </div>
-            <hr>
-            <div>
-                <button>Whatsapp</button>
-                <button>Bip</button>
-                <button>Sms</button>
-            </div>
-         </div>
+         
+          <div class="post">
+              <div>
+                  <strong>Nom:</strong> ${user.Nom} <br>
+                  <strong>Adresse:</strong> ${user.Adresse} <br>
+                  <strong>Localisation:</strong> ${user.Localisation} <br>
+                  
+                  <!-- Profile Image on top-right -->
+                  <div class="image-chauffeur">
+                      <img src="${user.ProfileImage ||'}" || src="./images/logoBack.jpg" alt="Profile Picture">
+                  </div>
+
+                  <!-- Hidden extra info -->
+                  <div class="extra-info" style="display: none;">
+                      <strong>Numéro:</strong> ${user.Numero} <br>
+                      <strong>Couleur de la moto:</strong> ${user.MotoCouleur} <br>
+                      <strong>Numéro de plaque:</strong> ${user.Plaque} <br>
+                  </div>
+              </div>
+              <hr>
+              <div class="listBtn">
+              <!-- See More Button -->
+                  <button class="see-more-btn">Plis detay</button>
+                  <button onclick="showMessageForm('${user.Numero}', '${user.Adresse}')"><i class="fab fa-whatsapp"></i>Kontakte'm</button>
+                  <button style="display: none" onclick="showMessageForm('${user.Numero}', '${user.Adresse}')">Bip</button>
+                  <button style="display: none" onclick="showMessageForm('${user.Numero}', '${user.Adresse}')">Sms</button>
+              </div>
+          </div>
         </div>
     </section>
 
