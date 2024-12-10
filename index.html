@@ -19,7 +19,7 @@
         <div class="image"><img src="" alt=""></div>
         <h1>Jwenn yon chofè taksi - Jakmèl</h1>
         <p>Kontakte yon chofè pou transpò oubyen livrezon lakay ou.</p>
-        <button >Rezève kounye</button>
+        <button ><a href="enskripsyon.html">Rezève kounye<</a></button>
         <p><i>Minimòm pri kous yo se 75Gdes nan vil la.</i></p>
     </header>
 
@@ -31,8 +31,8 @@
     </div>
 
   <!-- Formulaire pour envoyer les informations -->
-<div id="contactForm" style="display:none;">
-    <h3>Envoyer un message</h3>
+<div id="contactForm" class="contactForm" style="display:none;">
+    <button class="btnContact" onclick="closeForm()">Close</button>
     <label for="clientAddress">Adresse du client :</label>
     <input type="text" id="clientAddress" placeholder="Adresse du client" required><br>
   
@@ -126,6 +126,7 @@
 
      <script src="js/asset.js" defer></script>
     <script src="js/script.js" defer></script>
+    <script src="js/button.js" defer></script>
         <script src="js/displayData.js" defer></script>
 
     <script>

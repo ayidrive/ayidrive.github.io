@@ -37,6 +37,10 @@ header p {
     margin-top: 10px;
 }
 
+select{
+    padding: 10px;
+}
+
 /* Chauffeur Posts Styling */
 #chauffeur {
     width: 100%;
@@ -60,6 +64,55 @@ header p {
 }
 
 
+/* Styles de base pour la liste des utilisateurs */
+#chauffeur {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Crée une grille avec des colonnes flexibles */
+    gap: 20px; /* Espace entre les éléments */
+}
+
+/* Lorsque l'écran est petit (mobile), on utilise display: block */
+@media (max-width: 768px) {
+    #chauffeur {
+        display: block; /* Affichage en bloc pour les petits écrans */
+    }
+
+    .post {
+        margin-bottom: 20px; /* Ajoute de l'espace entre les cartes d'utilisateur */
+    }
+
+    /* Réduire la taille de l'image de profil sur mobile */
+    .image-chauffeur img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+}
+
+/* Style pour chaque post */
+.post {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.image-chauffeur {
+    display: flex;
+    justify-content: flex-end; /* Place l'image en haut à droite */
+    margin-bottom: 10px;
+}
+
+.image-chauffeur img {
+    width: 70px; /* Taille de l'image sur desktop */
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+
 /* Position the image at the top right */
 .image-chauffeur {
     position: absolute;  /* Fixed position so it stays on the screen */
@@ -69,7 +122,7 @@ header p {
     height: 60px;     /* Adjust the height of the image */
     border-radius: 50%;  /* Make the image circular */
     overflow: hidden;    /* Ensure the image is clipped if it overflows */
-    z-index: 1000;       /* Ensure the image is always on top of other content */
+    z-index: 100;       /* Ensure the image is always on top of other content */
     border: 3px solid blue;
     margin-bottom: 10px;
 }
@@ -118,6 +171,27 @@ button:hover {
 
 #sendSms {
     background-color: #34b7f1; /* Light blue for SMS */
+}
+
+.contactForm{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 109;
+    background-color: white;
+    border: 1px solid black;
+    width: 250px;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
+}
+.btnContact{
+    width: max-content;
+    padding: 2px;
+    font-size: 12px;
 }
 
 /* Form Styling */
