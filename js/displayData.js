@@ -26,7 +26,7 @@ function displayUsers() {
               <div class="post">
                   <div>
                       <strong>Nom:</strong> ${user.Nom} <br>
-                      <strong>Adresse:</strong> ${user.Adresse} <br>
+                      <strong>Adresse:</strong> ${user.Addresse} <br>
                       <strong>Localisation:</strong> ${user.Localisation} <br>
                       
                       <!-- Profile Image on top-right -->
