@@ -1,0 +1,108 @@
+/* Style de base pour le formulaire */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+#signup-form{
+    display: none;
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Boutons */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Champs de texte */
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
+    font-size: 16px;
+}
+
+/* Mise en page des sélecteurs */
+select {
+    font-size: 16px;
+}
+
+/* Champs spécifiques aux chauffeurs */
+#chauffeur-fields {
+    margin-top: 20px;
+}
+
+/* Cacher le champ de plaque au départ */
+#signup-plaque-code {
+    display: none;
+}
+
+/* Conteneur pour afficher les détails de l'utilisateur */
+#user-details {
+    padding: 20px;
+    background-color: white;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Style pour l'élément de formulaire qui contient un label et un champ */
+label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Responsive : Formulaire sur mobile */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    form {
+        padding: 15px;
+        box-shadow: none;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    input, select {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 400px) {
+    input, select, button {
+        padding: 8px;
+        font-size: 14px;
+    }
+}

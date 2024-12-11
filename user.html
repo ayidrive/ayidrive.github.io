@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+
+    <form id="signup-form">
+        <input type="text" id="signup-name" placeholder="Nom" required>
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="password" id="signup-password" placeholder="Mot de passe" required>
+        
+        <!-- Nouveaux champs -->
+        <input type="tel" id="signup-phone" placeholder="Numéro de téléphone" required>
+        <input type="text" id="signup-address" placeholder="Adresse" required>
+        
+        <!-- Sélection du rôle (chauffeur ou client) -->
+        <select id="signup-role" required>
+            <option value="client">Client</option>
+            <option value="chauffeur">Chauffeur</option>
+        </select>
+        
+        <!-- Champs spécifiques aux chauffeurs -->
+        <div id="chauffeur-fields" style="display: none;">
+            <input type="text" id="signup-moto-color" placeholder="Couleur de la moto">
+            <label for="signup-plaque">Avez-vous une plaque ?</label>
+            <select id="signup-plaque" onchange="togglePlaqueInput()">
+                <option value="non">Non</option>
+                <option value="oui">Oui</option>
+            </select>
+            <input type="text" id="signup-plaque-code" placeholder="Code de la plaque" style="display: none;">
+        </div>
+
+        <button type="submit">S'inscrire</button>
+        <button onclick="konekte()">Mwen vle konekte</button>
+    </form>
+    
+    <form id="login-form">
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Mot de passe" required>
+        <button type="submit">Konekte</button>
+        <button onclick="enskri()">Mwen vle esnkri</button>
+    </form>
+
+    <div id="user-details"></div>
+
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script src="js/asset.js" defer></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/button.js" defer></script>
+    <script src="js/user.js" defer></script>
+</body>
+</html>
