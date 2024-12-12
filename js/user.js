@@ -1,7 +1,39 @@
-document.getElementById('signup-form').addEventListener('submit', (e) => {
+// Afficher les détails de l'utilisateur
+function afficherDetailsUtilisateur() {
+    const localUser = JSON.parse(localStorage.getItem('connectedUser'));
+
+    if (localUser) {
+        document.getElementById('user-details').innerHTML = `
+            <h2>Bienvenue, ${localUser.Nom}</h2>
+            <p>Email : ${localUser.Email}</p>
+        `;
+        document.getElementById('logout-button').style.display = 'block';
+    } else {
+        document.getElementById('user-details').innerHTML = `
+            <h2>Veuillez vous connecter pour voir vos informations.</h2>
+        `;
+        document.getElementById('logout-button').style.display = 'none';
+    }
+}
+
+        // Déconnexion de l'utilisateur
+        document.getElementById('logout-button').addEventListener('click', () => {
+            localStorage.removeItem('connectedUser');
+            afficherDetailsUtilisateur();
+            alert('Vous êtes déconnecté !');
+        });
+
+        // Vérification initiale
+        afficherDetailsUtilisateur();
+
+
+
+
+
+// Gestion de l'inscription
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Récupérer les valeurs du formulaire
     const nom = document.getElementById('signup-name').value.trim();
     const email = document.getElementById('signup-email').value.trim();
     const password = document.getElementById('signup-password').value.trim();
@@ -9,7 +41,6 @@ document.getElementById('signup-form').addEventListener('submit', (e) => {
     const address = document.getElementById('signup-address').value.trim();
     const role = document.getElementById('signup-role').value;
 
-    // Champs spécifiques aux chauffeurs
     let motoColor = '';
     let plaqueCode = '';
     if (role === 'chauffeur') {
@@ -17,113 +48,112 @@ document.getElementById('signup-form').addEventListener('submit', (e) => {
         plaqueCode = document.getElementById('signup-plaque-code').value.trim();
     }
 
-    // Nettoyer le nom pour qu'il soit une clé Firebase valide
-    const sanitizedNom = nom.replace(/[\.\[\]#$/]/g, '').replace(/\s+/g, '_');
+    if (!nom || !email || !password || !phone || !address) {
+        alert("Tous les champs sont obligatoires !");
+        return;
+    }
+    if (!email.includes('@')) {
+        alert("Adresse email invalide !");
+        return;
+    }
 
-    // Vérifier si l'utilisateur existe déjà
-    const userRef = firebase.database().ref('chauffeurs');
-    userRef.child(sanitizedNom).once('value').then((snapshot) => {
+    const sanitizedNom = nom.replace(/[\.\[\]#$\/]/g, '').replace(/\s+/g, '_');
+
+    try {
+        const userRef = firebase.database().ref('chauffeurs');
+        const snapshot = await userRef.child(sanitizedNom).once('value');
+
         if (snapshot.exists()) {
-            console.log("Cet utilisateur existe déjà.");
+            alert("Cet utilisateur existe déjà.");
         } else {
-            // Enregistrer les données utilisateur dans la base de données
-            userRef.child(sanitizedNom).set({
+            await userRef.child(sanitizedNom).set({
                 Nom: nom,
                 Email: email,
-                password: password, // Note : les mots de passe devraient être hachés pour plus de sécurité
+                password: password, // À hacher en production
                 Numero: phone,
                 Addresse: address,
                 role: role,
                 MotoCouleur: motoColor || null,
                 Plaque: plaqueCode || null,
-            }).then(() => {
-                console.log('Utilisateur inscrit avec succès!');
-            }).catch((error) => {
-                console.error("Erreur lors de l'inscription: ", error.message);
             });
+            alert('Utilisateur inscrit avec succès !');
         }
-    }).catch((error) => {
-        console.error("Erreur lors de la vérification de l'utilisateur: ", error.message);
-    });
+    } catch (error) {
+        console.error("Erreur lors de l'inscription :", error.message);
+    }
 });
 
+// Gestion de la connexion
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('login-form').addEventListener('submit', (e) => {
+    const savedUser = JSON.parse(localStorage.getItem('connectedUser'));
+    if (savedUser) {
+        afficherDetailsUtilisateur(savedUser.id);
+        window.location.href = '/index.html'; // Redirection si déjà connecté
+        return;
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = document.getElementById('login-email').value.trim();
         const password = document.getElementById('login-password').value.trim();
 
         if (!email || !password) {
-            console.log("Veuillez remplir tous les champs.");
+            alert("Veuillez remplir tous les champs.");
             return;
         }
 
-        // Référence à la base de données
-        const userRef = firebase.database().ref('chauffeurs');
+        try {
+            const userRef = firebase.database().ref('chauffeurs');
+            const snapshot = await userRef.once('value');
 
-        // Vérifier l'utilisateur et le mot de passe
-        userRef.once('value')
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    let userFound = false;
+            if (snapshot.exists()) {
+                let userFound = false;
 
-                    snapshot.forEach((childSnapshot) => {
-                        const user = childSnapshot.val();
+                snapshot.forEach((childSnapshot) => {
+                    const user = childSnapshot.val();
+                    if (user.Email === email && user.password === password) {
+                        userFound = true;
 
-                        // Vérifie si l'email et le mot de passe correspondent
-                        if (user.Email === email && user.password === password) {
-                            userFound = true;
-                            console.log("Utilisateur connecté");
-                            afficherDetailsUtilisateur(childSnapshot.key); // Utilisez la clé de l'utilisateur pour afficher les détails
-                        }
-                    });
+                        const connectedUser = {
+                            id: childSnapshot.key,
+                            Nom: user.Nom,
+                            Email: user.Email,
+                        };
+                        localStorage.setItem('connectedUser', JSON.stringify(connectedUser));
 
-                    if (!userFound) {
-                        console.log("Email ou mot de passe incorrect.");
+                        alert("Connexion réussie !");
+                        window.location.href = '/index.html';
                     }
-                } else {
-                    console.log("Aucun utilisateur trouvé.");
+                });
+
+                if (!userFound) {
+                    alert("Email ou mot de passe incorrect.");
                 }
-            })
-            .catch((error) => {
-                console.error("Erreur lors de la connexion: ", error.message);
-            });
+            } else {
+                alert("Aucun utilisateur trouvé.");
+            }
+        } catch (error) {
+            console.error("Erreur lors de la connexion :", error.message);
+        }
     });
 });
 
+// Gestion de la déconnexion
+document.getElementById('logout-button').addEventListener('click', () => {
+    localStorage.removeItem('connectedUser');
+    alert("Déconnexion réussie.");
+    window.location.href = '/login.html';
+});
 
-function afficherDetailsUtilisateur(userId) {
-    const userRef = firebase.database().ref('chauffeurs/' + userId);
 
-    userRef.once('value').then((snapshot) => {
-        const userDetails = snapshot.val();
-        if (userDetails) {
-            const { Email, role, MotoCouleur, Plaque } = userDetails;
 
-            document.getElementById('user-details').innerHTML = `
-                <h2>${role === 'chauffeur' ? 'Chauffeur' : 'Client'}</h2>
-                <p>Email: ${Email}</p>
-                <p>Rôle: ${role}</p>
-                ${role === 'chauffeur' ? `
-                <p>Couleur de la moto: ${MotoCouleur || 'Non spécifiée'}</p>
-                <p>Code de la plaque: ${Plaque || 'Non spécifiée'}</p>` : ''}
-            `;
-        }
-    }).catch((error) => {
-        console.error("Erreur lors de l'affichage des détails: ", error.message);
-    });
+// Affichage dynamique des champs pour le rôle chauffeur
+function toggleChauffeurFields(isChauffeur) {
+    const chauffeurFields = document.getElementById('chauffeur-fields');
+    chauffeurFields.style.display = isChauffeur ? 'block' : 'none';
 }
 
 document.getElementById('signup-role').addEventListener('change', function () {
-    const role = this.value;
-    const chauffeurFields = document.getElementById('chauffeur-fields');
-
-    // Afficher/masquer les champs en fonction du rôle
-    chauffeurFields.style.display = role === 'chauffeur' ? 'block' : 'none';
-});
-
-document.getElementById('signup-plaque').addEventListener('change', function () {
-    const plaqueInput = document.getElementById('signup-plaque-code');
-    plaqueInput.style.display = this.value === 'oui' ? 'inline' : 'none';
+    toggleChauffeurFields(this.value === 'chauffeur');
 });

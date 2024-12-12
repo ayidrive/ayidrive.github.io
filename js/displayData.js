@@ -1,3 +1,6 @@
+
+
+
 // Function to display users and set up message sending buttons
 function displayUsers() {
   const usersRef = database.ref('chauffeurs');  // Reference to 'chauffeurs' in Firebase
@@ -19,7 +22,7 @@ function displayUsers() {
               const user = usersData[userId];
               
               // Add address to the dropdown options
-              addresses.add(user.Adresse);
+              addresses.add(user.Addresse);
 
               const post = document.createElement('div');
               post.innerHTML = `
@@ -45,7 +48,7 @@ function displayUsers() {
                   <div class="listBtn">
                   <!-- See More Button -->
                       <button class="see-more-btn">Plis detay</button>
-                      <button onclick="showMessageForm('${user.Numero}', '${user.Adresse}')"><i class="fab fa-whatsapp"></i>Kontakte'm</button>
+                      <button onclick="showMessageForm('${user.Numero}', '${user.Addresse}')"><i class="fab fa-whatsapp"></i>Kontakte'm</button>
                       <button style="display: none" onclick="showMessageForm('${user.Numero}', '${user.Adresse}')">Bip</button>
                       <button style="display: none" onclick="showMessageForm('${user.Numero}', '${user.Adresse}')">Sms</button>
                   </div>

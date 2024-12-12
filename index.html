@@ -17,10 +17,14 @@
     
     <header>
         <div class="image"><img src="" alt=""></div>
+        <div id="user-details"></div>
         <h1>Jwenn yon chofè taksi - Jakmèl</h1>
         <p>Kontakte yon chofè pou transpò oubyen livrezon lakay ou.</p>
-        <button ><a href="enskripsyon.html">Rezève kounye</a></button>
-        <button ><a href="user.html">Konekte</a></button>
+        <div class="headerBtn">
+            <button ><a href="enskripsyon.html">Rezève kounye</a></button>
+            <button ><a href="user.html">Konekte</a></button>
+            <button id="logout-button">Se déconnecter</button>
+        </div>
         <p><i>Minimòm pri kous yo se 75Gdes nan vil la.</i></p>
     </header>
 
@@ -126,106 +130,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
 
      <script src="js/asset.js" defer></script>
-    <script src="js/script.js" defer></script>
+    <script src="js/user.js" defer></script>
     <script src="js/button.js" defer></script>
         <script src="js/displayData.js" defer></script>
 
-    <script>
-       
-        // Handle form submission
-
-       // Ajout du chauffeur
-document.getElementById('addChauffeurBtn').addEventListener('click', function(event) {
-    event.preventDefault(); // Empêcher la soumission du formulaire
-
-    const nom = document.getElementById('nom').value;
-    const numero = document.getElementById('numero').value;
-    const adresse = document.getElementById('adresse').value;
-    const localisation = document.getElementById('localisation').value;
-    const motoCouleur = document.getElementById('motoCouleur').value;
-    const plaque = document.getElementById('plaque').value;
-
-    const chauffeurData = {
-        Nom: nom,
-        Numero: numero,
-        Adresse: adresse,
-        Localisation: localisation,
-        MotoCouleur: motoCouleur,
-        Plaque: plaque
-    };
-
-    const chauffeursRef = database.ref('chauffeurs/' + nom);
-    chauffeursRef.set(chauffeurData, function(error) {
-        if (error) {
-            alert('Erreur: ' + error.message);
-        } else {
-            alert('Chauffeur ajouté avec succès!');
-            document.getElementById('taxiForm').reset();
-        }
-    });
-});
-
-// Recherche du chauffeur
-document.getElementById('searchChauffeurBtn').addEventListener('click', function(event) {
-    event.preventDefault(); // Empêcher la soumission du formulaire
-    
-    const nom = document.getElementById('nom').value; // Utiliser le nom pour identifier
-
-    if (nom === "") {
-        alert("Veuillez entrer un nom pour rechercher.");
-        return;
-    }
-
-    const chauffeursRef = database.ref('chauffeurs/' + nom);
-    chauffeursRef.once('value', function(snapshot) {
-        if (snapshot.exists()) {
-            const chauffeur = snapshot.val();
-            
-            // Remplir les champs input avec les données récupérées
-            document.getElementById('numero').value = chauffeur.Numero || ''; // Si la donnée existe, l'afficher sinon laisser vide
-            document.getElementById('adresse').value = chauffeur.Adresse || '';
-            document.getElementById('localisation').value = chauffeur.Localisation || '';
-            document.getElementById('motoCouleur').value = chauffeur.MotoCouleur || '';
-            document.getElementById('plaque').value = chauffeur.Plaque || '';
-            
-            alert('Chauffeur trouvé !');
-        } else {
-            alert('Aucun chauffeur trouvé avec ce nom.');
-        }
-    });
-});
-
-// Mise à jour du chauffeur
-document.getElementById('updateChauffeurBtn').addEventListener('click', function(event) {
-    event.preventDefault(); // Empêcher la soumission du formulaire
-    
-    const nom = document.getElementById('nom').value; // Utiliser le nom pour identifier
-    const numero = document.getElementById('numero').value;
-    const adresse = document.getElementById('adresse').value;
-    const localisation = document.getElementById('localisation').value;
-    const motoCouleur = document.getElementById('motoCouleur').value;
-    const plaque = document.getElementById('plaque').value;
-
-    const chauffeurData = {
-        Nom: nom,
-        Numero: numero,
-        Adresse: adresse,
-        Localisation: localisation,
-        MotoCouleur: motoCouleur,
-        Plaque: plaque
-    };
-
-    const chauffeursRef = database.ref('chauffeurs/' + nom);
-    chauffeursRef.update(chauffeurData, function(error) {
-        if (error) {
-            alert('Erreur: ' + error.message);
-        } else {
-            alert('Chauffeur mis à jour avec succès!');
-            document.getElementById('taxiForm').reset();
-        }
-    });
-});
-    </script>
 
 
 </body>

@@ -21,6 +21,14 @@ header {
     text-align: center;
     padding: 1.5rem 10px;
 }
+.headerBtn{
+    display: flex;
+    gap: 5px;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
 
 h1 {
     margin-bottom: 10px;
@@ -32,9 +40,32 @@ h2 {
     color: #4CAF50;
 }
 
+#logout-button {
+    display: none;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff5252;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+#logout-button:hover {
+    background-color: #ff1744;
+}
+
 header p {
     font-size: 1rem;
     margin-top: 10px;
+}
+
+#user-details{
+    border: 2px solid;
+    background-color: gray;
+    padding: 1px;
+    width: 100%;
+}
+#user-details h2{
+    color: white;
 }
 
 select{
